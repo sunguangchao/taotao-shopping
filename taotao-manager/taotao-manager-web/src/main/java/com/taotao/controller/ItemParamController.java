@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taotao.common.utils.TaotaoResult;
 import com.taotao.pojo.TbItemParam;
 import com.taotao.service.ItemParamService;
+import com.taotao.service.ItemService;
 
 @Controller
 @RequestMapping("/item/param")
 public class ItemParamController {
 	@Autowired
 	private ItemParamService itemParamService;
+	@Autowired
+	private ItemService itemService;
+	
 	@RequestMapping("/query/itemcatid/{itemCatId}")
 	@ResponseBody
 	public TaotaoResult getItemParamByCid(@PathVariable Long itemCatId) {
@@ -33,5 +37,13 @@ public class ItemParamController {
 		itemParam.setParamData(paramData);
 		TaotaoResult result = itemParamService.insertItemParam(itemParam);
 		return result;
+	}
+	//加载商品规格
+	@RequestMapping("/query/item/{itemId}")
+	@ResponseBody
+	public TaotaoResult queryItemParam(@PathVariable Long itemId){
+		TaotaoResult result = itemService.getItemParamById(itemId);
+		return result;
+
 	}
 }

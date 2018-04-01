@@ -1,14 +1,19 @@
 package com.taotao.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.taotao.common.pojo.EUDataGridResult;
 import com.taotao.common.utils.TaotaoResult;
 import com.taotao.mapper.TbContentMapper;
 import com.taotao.pojo.TbContent;
+import com.taotao.pojo.TbContentExample;
 import com.taotao.service.ContentService;
 import com.taotao.utils.HttpClientUtil;
 @Service
@@ -36,6 +41,20 @@ public class ContentServiceImpl implements ContentService{
 			e.printStackTrace();
 		}		
 		return TaotaoResult.ok();
+	}
+
+	@Override
+	public EUDataGridResult getContentList(int page, int rows) {
+		// TODO Auto-generated method stub
+		TbContentExample example = new TbContentExample();
+		PageHelper.startPage(page, rows);
+		List<TbContent> lists = contentMapper.selectByExample(example);
+		EUDataGridResult result = new EUDataGridResult();
+		result.setRows(lists);
+		//获取记录总数
+		PageInfo<TbContent> pageInfo = new PageInfo<>(lists);
+		result.setTotal(pageInfo.getTotal());
+		return result;
 	}
 	
 

@@ -16,9 +16,13 @@ import com.taotao.mapper.TbItemMapper;
 import com.taotao.mapper.TbItemParamItemMapper;
 import com.taotao.pojo.TbItem;
 import com.taotao.pojo.TbItemDesc;
+import com.taotao.pojo.TbItemDescExample;
 import com.taotao.pojo.TbItemExample;
 import com.taotao.pojo.TbItemExample.Criteria;
+import com.taotao.pojo.TbItemParam;
+import com.taotao.pojo.TbItemParamExample;
 import com.taotao.pojo.TbItemParamItem;
+import com.taotao.pojo.TbItemParamItemExample;
 import com.taotao.service.ItemService;
 /**
  * 商品管理service
@@ -50,6 +54,9 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 
+	/**
+	 * 商品列表查询
+	 */
 	@Override
 	public EUDataGridResult getItemList(int page, int rows) {
 		// TODO Auto-generated method stub
@@ -95,8 +102,8 @@ public class ItemServiceImpl implements ItemService {
 
 	public TaotaoResult updateItem(TbItem item) {
 		// TODO Auto-generated method stub
-//		itemMapper.updateByExample(record, example)
-		return null;
+		itemMapper.updateByPrimaryKey(item);
+		return TaotaoResult.ok();
 	}
 	
 	
@@ -125,5 +132,45 @@ public class ItemServiceImpl implements ItemService {
 		itemParamItemMapper.insert(itemParamItem);
 		return TaotaoResult.ok();
 	}
-	
+
+
+	/**
+	 * wait to verify
+	 */
+	@Override
+	public TaotaoResult getItemDescById(long itemId) {
+		// TODO Auto-generated method stub
+		TbItemDescExample example = new TbItemDescExample();
+		com.taotao.pojo.TbItemDescExample.Criteria criteria  = example.createCriteria();
+		criteria.andItemIdEqualTo(itemId);
+		List<TbItemDesc> list = itemDescMapper.selectByExample(example);
+		if (list != null && list.size() > 0) {
+			return TaotaoResult.ok(list.get(0));
+		}
+		return null;
+	}
+
+
+	/**
+	 * wait to verify
+	 */
+	@Override
+	public TaotaoResult getItemParamById(long itemId) {
+		TbItemParamItemExample example = new TbItemParamItemExample();
+		com.taotao.pojo.TbItemParamItemExample.Criteria criteria = example.createCriteria();
+		criteria.andIdEqualTo(itemId);
+		List<TbItemParamItem> list = itemParamItemMapper.selectByExample(example);
+		if (list != null && list.size() > 0) {
+			return TaotaoResult.ok(list.get(0));
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public TaotaoResult delItemById(long itemId) {
+		itemMapper.deleteByPrimaryKey(itemId);
+		return TaotaoResult.ok();
+	}
 }

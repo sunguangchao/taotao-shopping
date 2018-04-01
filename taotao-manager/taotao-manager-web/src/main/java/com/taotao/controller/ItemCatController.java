@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taotao.common.pojo.EUTreeNode;
 import com.taotao.service.ItemCatService;
-
+/**
+ * 实现商品类目选择功能
+ * @author 11981
+ *
+ */
 @Controller
 @RequestMapping("/item/cat")
 public class ItemCatController {
