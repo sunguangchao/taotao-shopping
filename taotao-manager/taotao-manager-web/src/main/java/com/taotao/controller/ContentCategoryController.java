@@ -12,6 +12,7 @@ import com.taotao.common.pojo.EUTreeNode;
 import com.taotao.common.utils.TaotaoResult;
 import com.taotao.service.ContentCategoryService;
 
+
 @Controller
 @RequestMapping("/content/category")
 public class ContentCategoryController {
@@ -33,15 +34,29 @@ public class ContentCategoryController {
 		return result;
 	}
 	/**
-	 * 有问题目前
-	 * @param parentId
+	 * @param parentId-没有送过来
 	 * @param id
 	 * @return
+	 * parentId:node.parentId,
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public TaotaoResult deleteContentCategory(Long parentId, Long id) {
-		TaotaoResult result = categoryService.deleteContentCategory(parentId, id);
+	public TaotaoResult deleteContentCategory(Long id) {
+		TaotaoResult result = categoryService.deleteContentCategory(id);
+		return result;
+	}
+	
+	/**
+	 * 目前前端的页面是有问题的
+	 * 根据nodeId 修改节点名称
+	 * @param id
+	 * @param text
+	 * @return
+	 */
+	@RequestMapping("/update")
+	@ResponseBody
+	public TaotaoResult updateContentCategory(Long id, String text) {
+		TaotaoResult result = categoryService.updateContentCategory(id, text);
 		return result;
 	}
 }

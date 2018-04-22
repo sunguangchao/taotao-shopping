@@ -50,7 +50,9 @@ public class PictureServiceImpl implements PictureService {
 //			UUID.randomUUID();
 			String newName = IDUtils.getImageName();
 			String imagePath = new DateTime().toString("/yyyy/MM/dd");
+			//新文件名
 			newName = newName + oldName.substring(oldName.lastIndexOf("."));
+			//转存文件，上传到ftp服务器
 			boolean result = FtpUtil.uploadFile(FTP_ADDRESS, FTP_PORT, FTP_USERNAME, FTP_PASSWORD, FTP_BASE_PATH, 
 					imagePath, newName, uploadFile.getInputStream());
 			//返回结果

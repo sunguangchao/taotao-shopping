@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import com.taotao.pojo.TbContentCategoryExample.Criteria;
 import com.taotao.service.ContentCategoryService;
 @Service
 public class ContentCategoryServiceImpl implements ContentCategoryService{
+	private static Logger LOGGER = LoggerFactory.getLogger(ContentCategoryServiceImpl.class);
 
 	@Autowired
 	private TbContentCategoryMapper contentCategoryMapper;
@@ -38,12 +42,16 @@ public class ContentCategoryServiceImpl implements ContentCategoryService{
 		return resultList;
 	}
 
+	/**
+	 * 新增子节点
+	 */
 	@Override
 	public TaotaoResult insertContentCategory(long parentId, String name) {
-		// TODO Auto-generated method stub
+		// 添加一个新节点，创建一个节点对象
 		TbContentCategory contentCategory = new TbContentCategory();
 		contentCategory.setName(name);
 		contentCategory.setIsParent(false);
+		//状态。可选值:1(正常),2(删除)
 		contentCategory.setStatus(1);
 		contentCategory.setParentId(parentId);
 		contentCategory.setSortOrder(1);
@@ -61,32 +69,39 @@ public class ContentCategoryServiceImpl implements ContentCategoryService{
 	}
 
 	/**
-	 * 删除节点
-	 * 未完成
+	 * 传入parentId, nodeid
 	 */
 	@Override
-	public TaotaoResult deleteContentCategory(long parentId, long id) {
-		System.out.println("1");
-		//先根据ID删除该节点
+	public TaotaoResult deleteContentCategory(long nodeId) {
+		
+		//根据nodeId查询出parentId
+		TbContentCategory category = contentCategoryMapper.selectByPrimaryKey(nodeId);
+		Long parentIdM = category.getParentId();
+		LOGGER.info("parentId:" + parentIdM);
+		//根据nodeId删除节点信息
+		contentCategoryMapper.deleteByPrimaryKey(nodeId);
 		TbContentCategoryExample example = new TbContentCategoryExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andIdEqualTo(id);
-		contentCategoryMapper.deleteByExample(example);
-		
-//		//查询该parentId下是否有子节点
-//		TbContentCategoryExample example2 = new TbContentCategoryExample();
-//		Criteria criteria2 = example2.createCriteria();
-//		criteria2.andParentIdEqualTo(parentId);
-////		List<TbContentCategory> list = contentCategoryMapper.selectByExample(example2);
-//		int count = contentCategoryMapper.countByExample(example2);
-//		System.out.println("count:" + count);
-//		//如果该parentId下没有子节点，则将isParent置为false
-//		if (count == 0) {
-//			TbContentCategory parentCat = contentCategoryMapper.selectByPrimaryKey(parentId);
-//			parentCat.setIsParent(false);
-//			contentCategoryMapper.updateByPrimaryKey(parentCat);
-//		}
+		criteria.andParentIdEqualTo(parentIdM);
+		//查询该parentId下是否还有子目录
+		List<TbContentCategory> list = contentCategoryMapper.selectByExample(example);
+		if (list == null || list.size() == 0) {
+			//如果没有，则将parentId对应的nodeId的isParent字段置为false
+			TbContentCategory parentCat = contentCategoryMapper.selectByPrimaryKey(parentIdM);
+			parentCat.setIsParent(false);
+			contentCategoryMapper.updateByPrimaryKey(parentCat);
+		}
 		return TaotaoResult.ok();
+	}
+	
+	public TaotaoResult updateContentCategory(long id, String text) {
+		TbContentCategory category = contentCategoryMapper.selectByPrimaryKey(id);
+		if (category != null) {
+			category.setName(text);
+			contentCategoryMapper.updateByPrimaryKey(category);
+		}
+		return TaotaoResult.ok();
+		
 	}
 
 }

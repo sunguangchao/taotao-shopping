@@ -20,6 +20,11 @@ public class ItemParamController {
 	@Autowired
 	private ItemService itemService;
 	
+	/**
+	 * 接收cid参数。调用Service查询规格参数模板。返回TaotaoResult。返回json数据。
+	 * @param itemCatId
+	 * @return
+	 */
 	@RequestMapping("/query/itemcatid/{itemCatId}")
 	@ResponseBody
 	public TaotaoResult getItemParamByCid(@PathVariable Long itemCatId) {
@@ -27,7 +32,13 @@ public class ItemParamController {
 		return result;
 	}
 	
-	
+	/**
+	 * 接收cid、规格参数模板。创建一TbItemParam对象。
+	 * 调用Service返回TaotaoResult。返回json数据。
+	 * @param cid
+	 * @param paramData
+	 * @return
+	 */
 	@RequestMapping("/save/{cid}")
 	@ResponseBody
 	public TaotaoResult insertItemParam(@PathVariable Long cid, String paramData) {
@@ -38,7 +49,12 @@ public class ItemParamController {
 		TaotaoResult result = itemParamService.insertItemParam(itemParam);
 		return result;
 	}
-	//加载商品规格
+	/**
+	 * 
+	 * @param itemId
+	 * @return
+	 * 加载商品规格
+	 */
 	@RequestMapping("/query/item/{itemId}")
 	@ResponseBody
 	public TaotaoResult queryItemParam(@PathVariable Long itemId){
