@@ -28,6 +28,11 @@ public class ItemServiceImpl implements ItemService {
 	@Value("${ITEM_PARAM_URL}")
 	private String ITEM_PARAM_URL;
 
+	/**
+	 * 接收商品id，调用taotao-rest的服务，查询商品的基本信息。
+	 * 得到一个json字符串。需要把json转换成java对象。
+	 * 然后在jsp页面渲染。
+	 */
 	@Override
 	public ItemInfo getItemById(Long itemId) {
 		try {
@@ -48,6 +53,11 @@ public class ItemServiceImpl implements ItemService {
 		
 	}
 
+	/**
+	 * 接收商品id，调用taotao-rest的服务根据商品id查询商品描述信息。
+	 * 得到json数据。把json转换成java对象从java对象中把商品描述取出来。
+	 * 返回商品描述字符串。
+	 */
 	@Override
 	public String getItemDescById(Long itemId) {
 		try {
@@ -67,6 +77,10 @@ public class ItemServiceImpl implements ItemService {
 		return null;
 	}
 
+	/**
+	 * 接收商品id，根据商品id查询规格参数的数据，调用服务端的方法，返回json数据。
+	 * 把json转换成java对象，根据java对象生成html片段，返回。
+	 */
 	@Override
 	public String getItemParam(Long itemId) {
 		try {
@@ -95,6 +109,7 @@ public class ItemServiceImpl implements ItemService {
 				}
 				sb.append("    </tbody>\n");
 				sb.append("</table>");
+				//返回html片段
 				return sb.toString();
 			}
 		} catch (Exception e) {

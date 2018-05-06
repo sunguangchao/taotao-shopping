@@ -56,6 +56,28 @@ public class ContentServiceImpl implements ContentService{
 		result.setTotal(pageInfo.getTotal());
 		return result;
 	}
+
+	@Override
+	public TaotaoResult deleteContent(long ids) {
+		// TODO Auto-generated method stub
+		contentMapper.deleteByPrimaryKey(ids);
+		return TaotaoResult.ok();
+	}
+
+	@Override
+	public TaotaoResult updateContent(TbContent content) {
+		content.setUpdated(new Date());
+		contentMapper.updateByPrimaryKey(content);
+		// TODO Auto-generated method stub
+		
+		//添加缓存同步逻辑
+		try {
+			HttpClientUtil.doGet(REST_BASE_URL+REST_CONTENT_SYNC_URL+content.getCategoryId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return TaotaoResult.ok();
+	}
 	
 
 }

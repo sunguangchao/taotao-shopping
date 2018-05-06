@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taotao.common.utils.JsonUtils;
 import com.taotao.rest.pojo.CatResult;
 import com.taotao.rest.service.ItemCatService;
+
+/**
+ * 接收页面传递过来的参数，返回一个json数据，需要把json数据包装成一句js代码，返回一个字符串。
+ * @author 11981
+ *
+ */
 @Controller
 public class ItemCatController {
 	@Autowired

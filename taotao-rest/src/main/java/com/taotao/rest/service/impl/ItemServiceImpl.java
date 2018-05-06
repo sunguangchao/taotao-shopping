@@ -67,6 +67,9 @@ public class ItemServiceImpl implements ItemService{
 		return TaotaoResult.ok(item);
 	}
 
+	/**
+	 * 取商品描述信息
+	 */
 	@Override
 	public TaotaoResult getItemDesc(long itemId) {
 		try {
@@ -80,6 +83,7 @@ public class ItemServiceImpl implements ItemService{
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		TbItemDesc itemDesc = itemDescMapper.selectByPrimaryKey(itemId);
@@ -95,11 +99,15 @@ public class ItemServiceImpl implements ItemService{
 		return TaotaoResult.ok(itemDesc);
 	}
 
+	
+	/**
+	 * 根据商品ID查询商品规格参数
+	 */
 	@Override
 	public TaotaoResult getItemParam(long itemId) {
 		try {
 			//添加缓存逻辑
-			//从缓存中取商品信息，商品ID对应的信息
+			//从缓存中取商品信息，商品ID对应的规格参数
 			String json = jedisClient.get(REDIS_ITEM_KEY + ":" + itemId + ":param");
 			//判断是否有值
 			if (!StringUtils.isBlank(json)) {
@@ -115,7 +123,7 @@ public class ItemServiceImpl implements ItemService{
 		TbItemParamItemExample example = new TbItemParamItemExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andItemIdEqualTo(itemId);
-		//执行查询
+		//执行查询-返回参数列表
 		List<TbItemParamItem> list = itemParamItemMapper.selectByExampleWithBLOBs(example);
 		if (list != null && list.size() > 0) {
 			TbItemParamItem item = list.get(0);
@@ -132,8 +140,4 @@ public class ItemServiceImpl implements ItemService{
 		}
 		return TaotaoResult.build(400, "无此商品规格");
 	}
-	
-	
-	
-
 }

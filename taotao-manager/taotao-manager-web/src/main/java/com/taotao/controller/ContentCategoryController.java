@@ -12,7 +12,11 @@ import com.taotao.common.pojo.EUTreeNode;
 import com.taotao.common.utils.TaotaoResult;
 import com.taotao.service.ContentCategoryService;
 
-
+/**
+ * jsp页面：content-category
+ * @author 11981
+ *
+ */
 @Controller
 @RequestMapping("/content/category")
 public class ContentCategoryController {
@@ -38,6 +42,11 @@ public class ContentCategoryController {
 	 * @param id
 	 * @return
 	 * parentId:node.parentId,
+	 * 这里我修改了下：
+	 * 页面中node.parentId为null
+	 * 所以把方法参数中的parentId去掉了
+	 * 注意：
+	 * 这里id要和js中的id对应，否则报空指针异常
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody

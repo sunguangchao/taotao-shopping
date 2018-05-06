@@ -1,7 +1,11 @@
 package com.taotao.portal.pojo;
 
 import java.util.List;
-
+/**
+ * 购物车
+ * @author 11981
+ *
+ */
 public class CartItem {
 	
 	private long id;

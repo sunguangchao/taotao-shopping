@@ -15,6 +15,11 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 	
+	/**
+	 * 接收商品ID调用Service查询商品信息
+	 * @param itemId
+	 * @return
+	 */
 	@RequestMapping("/info/{itemId}")
 	@ResponseBody
 	public TaotaoResult getItemBaseInfo(@PathVariable Long itemId) {

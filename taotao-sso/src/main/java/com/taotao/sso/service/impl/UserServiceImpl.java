@@ -37,6 +37,10 @@ public class UserServiceImpl implements UserService{
 	private Integer SSO_SESSION_EXPIRE;
 	
 
+	/**
+	 * 接收两个参数：内容、内容类型。
+	 * 根据内容类型查询tb_user表返回Taotaoresult对象。
+	 */
 	@Override
 	public TaotaoResult checkData(String content, Integer type) {
 		//设置查询条件
@@ -94,6 +98,12 @@ public class UserServiceImpl implements UserService{
 		return TaotaoResult.ok();
 	}
 
+	/**
+	 * 用户登录的Service层：
+	 * 思路：
+	 * 1. 接收两个参数用户名、密码。调用dao层查询用户信息。
+	 * 2. 生成token，把用户信息写入redis。返回token。使用TaotaoResult包装。
+	 */
 	@Override
 	public TaotaoResult userLogin(String username, String password, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -112,7 +122,7 @@ public class UserServiceImpl implements UserService{
 		}
 		//生成token
 		String token = UUID.randomUUID().toString();
-		//保存用户之前，把用户对象中的密码清空
+		//保存用户之前，把用户对象中的密码清空-这点是要考虑到的
 		user.setPassword(null);
 		jedisClient.set(REDIS_USER_SESSION_KEY + ":" + token, JsonUtils.objectToJson(user));
 		//设置session的过期时间
@@ -123,6 +133,9 @@ public class UserServiceImpl implements UserService{
 		return TaotaoResult.ok(token);
 	}
 
+	/**
+	 * 接收token，调用dao，到redis中查询token对应的用户信息。返回用户信息并更新过期时间。
+	 */
 	@Override
 	public TaotaoResult getUserByToken(String token) {
 		//根据Token从redis中查询用户信息
@@ -149,5 +162,4 @@ public class UserServiceImpl implements UserService{
 			return TaotaoResult.build(400, "安全退出失败");
 		}
 	}
-
 }

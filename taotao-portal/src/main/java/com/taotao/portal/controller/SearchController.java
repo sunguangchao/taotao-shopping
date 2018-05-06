@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.taotao.portal.pojo.SearchResult;
 import com.taotao.portal.service.SearchService;
-
+/**
+ * 接收请求的参数查询条件和页码。调用Service查询商品列表得到SearchResult对象。
+ * @author 11981
+ *
+ */
 @Controller
 public class SearchController {
 	
@@ -21,6 +25,7 @@ public class SearchController {
 	public String search(@RequestParam("q")String queryString, @RequestParam(defaultValue="1")Integer page, Model model) {
 		if (queryString != null) {
 			try {
+				//编码转换
 				queryString = new String(queryString.getBytes("iso8859-1"), "utf-8");
 			} catch (UnsupportedEncodingException e) {
 				// TODO: handle exception

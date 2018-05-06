@@ -26,7 +26,13 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	
+	/**
+	 * 从url中接收两个参数，调用Service进行校验，在调用Service之前，先对参数进行校验
+	 * @param param
+	 * @param type
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("/check/{param}/{type}")
 	@ResponseBody
 	public Object checkData(@PathVariable String param, @PathVariable Integer type, String callback) {
@@ -119,6 +125,13 @@ public class UserController {
 			return mappingJacksonValue;
 		}
 	}
+	
+	/**
+	 * 安全退出
+	 * @param token
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("/logout/{token}")
 	@ResponseBody
 	public Object logoutByToken(@PathVariable String token, String callback) {

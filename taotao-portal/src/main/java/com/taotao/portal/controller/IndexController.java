@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taotao.common.utils.TaotaoResult;
 import com.taotao.portal.service.ContentService;
-
+/**
+ * 首页大广告
+ * @author 11981
+ *
+ */
 @Controller
 public class IndexController {
 	

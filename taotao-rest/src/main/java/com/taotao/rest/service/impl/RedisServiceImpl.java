@@ -8,6 +8,11 @@ import com.taotao.common.utils.ExceptionUtil;
 import com.taotao.common.utils.TaotaoResult;
 import com.taotao.rest.dao.JedisClient;
 import com.taotao.rest.service.RedisService;
+/**
+ * 接收内容分类id，调用dao删除redis中对应的hash中key为分类id的项。
+ * @author 11981
+ *
+ */
 @Service
 public class RedisServiceImpl implements RedisService{
 

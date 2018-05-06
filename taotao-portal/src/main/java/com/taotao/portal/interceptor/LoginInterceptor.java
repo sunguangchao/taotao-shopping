@@ -11,7 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.taotao.common.utils.CookieUtils;
 import com.taotao.pojo.TbUser;
 import com.taotao.portal.service.impl.UserServiceImpl;
-
+/**
+ * 同时需要在springmvc.xml中配置
+ * @author 11981
+ *
+ */
 public class LoginInterceptor implements HandlerInterceptor {
 	
 	//不一样

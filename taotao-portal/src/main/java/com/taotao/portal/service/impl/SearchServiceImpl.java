@@ -15,6 +15,8 @@ import com.taotao.utils.HttpClientUtil;
 /**
  * 商品搜索Service
  * @author 11981
+ * 接收两个参数1、查询条件2、页码。调用taotao-search的搜索服务。
+ * 接收返回的json数据，把json转换成java对象返回SearchResult对象。
  *
  */
 @Service
@@ -44,7 +46,6 @@ public class SearchServiceImpl implements SearchService{
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
 
 }

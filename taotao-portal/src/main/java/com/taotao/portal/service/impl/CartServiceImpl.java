@@ -27,7 +27,12 @@ public class CartServiceImpl implements CartService {
 	
 	/*
 	 * /(non-Javadoc)
-	 * @see com.taotao.portal.service.CartService#addCartItem(long, int, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 * @see com.taotao.portal.service.CartService#addCartItem(long, int, javax.servlet.http.HttpServletRequest, 
+	 * javax.servlet.http.HttpServletResponse)
+	 * 基本思路：
+	 * 接收一个商品id，数量（默认为1），根据商品id查询商品信息。
+	 * 调用taotao-rest的服务。把商品添加到购物车，先把购物车商品列表取出来，判断列表中是否有此商品，如果有就增加数量就可以了。
+	 * 如果没有把此商品添加到商品列表。返回添加成功Taotaoresult。
 	 */
 	@Override
 	public TaotaoResult addCartItem(long itemId, int num, 
@@ -94,6 +99,9 @@ public class CartServiceImpl implements CartService {
 		return itemList;
 	}
 
+	/**
+	 * 在购物车页面中点击删除连接，接收要删除的商品id，从cookie中把商品找到删除，重新写入cookie，重新展示购物车页面。
+	 */
 	@Override
 	public TaotaoResult deleteCartItem(long itemId, HttpServletRequest request, HttpServletResponse response) {
 		//从cookie中取购物车商品列表
@@ -107,6 +115,30 @@ public class CartServiceImpl implements CartService {
 		}
 		//把购物车列表重新写入cookie
 		CookieUtils.setCookie(request, response, "TT_CART", JsonUtils.objectToJson(itemList), true);
+		return TaotaoResult.ok();
+	}
+
+	/**
+	 * 修改购物车数量
+	 */
+	@Override
+	public TaotaoResult updateCartItemNum(long itemId, Integer itemNum, HttpServletRequest request,
+			HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		//取商品信息
+		CartItem cartItem = null;
+		//取购物车商品列表
+		List<CartItem> list = getCartItemList(request);
+		//判断购物车商品列表中是否存在此商品
+		for(CartItem citem : list) {
+			//如果列表中存在此商品
+			if (citem.getId() == itemId) {
+				//增加商品数量
+				citem.setNum(itemNum);
+				cartItem = citem;//?
+				break;
+			}
+		}
 		return TaotaoResult.ok();
 	}
 
